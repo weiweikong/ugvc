@@ -36,7 +36,7 @@
 #include <QApplication>
 #include <ros/ros.h>
 
-#include "fallrisk_gui.h"
+#include "ugvc_gui.h"
 
 
 int main(int argc, char **argv)
@@ -48,10 +48,10 @@ int main(int argc, char **argv)
 
   QApplication app( argc, argv );
 
-  FallRiskGUI* fallrisk_gui = new FallRiskGUI();
-  fallrisk_gui->show();
+  UgvcGUI* ugvc_gui = new UgvcGUI();
+  ugvc_gui->show();
 
   app.exec();
 
-  delete fallrisk_gui;
+  delete ugvc_gui;
 }

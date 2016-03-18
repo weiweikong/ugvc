@@ -1,5 +1,5 @@
-#include "fallrisk_gui.h"
-#include "ui_fallrisk_gui.h"
+#include "ugvc_gui.h"
+#include "ui_ugvc_gui.h"
 #include <iostream>
 #include "rviz/view_manager.h"
 #include "rviz/tool_manager.h"
@@ -9,9 +9,9 @@
  * This class creates the GUI using rviz APIs.
  */
 
-FallRiskGUI::FallRiskGUI(QWidget *parent) :
+UgvcGUI::UgvcGUI(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::FallRiskGUI),it_(nh_)
+    ui(new Ui::UgvcGUI),it_(nh_)
 {
     /**
      * Set up the QT related UI components.
@@ -38,7 +38,7 @@ FallRiskGUI::FallRiskGUI(QWidget *parent) :
     initActionsConnections();
 }
 
-FallRiskGUI::~FallRiskGUI()
+UgvcGUI::~UgvcGUI()
 {
     delete ui;
     delete mapManager_;
@@ -48,7 +48,7 @@ FallRiskGUI::~FallRiskGUI()
     delete status_label_;
 }
 
-void FallRiskGUI::initVariables()
+void UgvcGUI::initVariables()
 {
     /**
      *Initialize default values of all the variables. Push these definitions to xml/config file in future
@@ -64,14 +64,14 @@ void FallRiskGUI::initVariables()
     pathTopic_ = QString("/move_base/NavfnROS/plan");
 
     moveBaseCmdPub = nh_.advertise<geometry_msgs::Twist>(velocityTopic_.toStdString(),1);
-    centerDistSub = nh_.subscribe("/distance/image_center_dist",1,&FallRiskGUI::distanceSubCallback,this);
-    //baseSensorStatus = nh_.subscribe(baseSensorTopic_.toStdString(),1,&FallRiskGUI::baseStatusCheck,this);
-    liveVideoSub = it_.subscribe(imageTopic_.toStdString(),1,&FallRiskGUI::liveVideoCallback,this,image_transport::TransportHints("compressed"));
+    centerDistSub = nh_.subscribe("/distance/image_center_dist",1,&UgvcGUI::distanceSubCallback,this);
+    //baseSensorStatus = nh_.subscribe(baseSensorTopic_.toStdString(),1,&UgvcGUI::baseStatusCheck,this);
+    liveVideoSub = it_.subscribe(imageTopic_.toStdString(),1,&UgvcGUI::liveVideoCallback,this,image_transport::TransportHints("compressed"));
 
     setRobotVelocity();
 }
 
-void FallRiskGUI::initActionsConnections()
+void UgvcGUI::initActionsConnections()
 {
     /**
      * Set up the status Bar and display messages emitted from each of the tools.
@@ -97,7 +97,7 @@ void FallRiskGUI::initActionsConnections()
     connect(ui->tab_display, SIGNAL(currentChanged(int)),this,SLOT(setActiveRvizToolBtns(int)));
 }
 
-void FallRiskGUI::initDisplayWidgets()
+void UgvcGUI::initDisplayWidgets()
 {
 
     //Setup the UI elements for displaying 2D map
@@ -175,7 +175,7 @@ void FallRiskGUI::initDisplayWidgets()
 
 }
 
-void FallRiskGUI::initTools(){
+void UgvcGUI::initTools(){
     /**
      * ToolManager is similar to ViewManager. It can be used to add new tools and change the current or default tool.
      * Properties of tools are stored in a PropertyTreeModel. To set/modify any property of a tool use getPropertyContainer function.
@@ -200,7 +200,7 @@ void FallRiskGUI::initTools(){
 
 }
 
-void FallRiskGUI::keyPressEvent(QKeyEvent *event)
+void UgvcGUI::keyPressEvent(QKeyEvent *event)
 {
     switch(event->key())
     {
@@ -226,7 +226,7 @@ void FallRiskGUI::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void FallRiskGUI::distanceSubCallback(const std_msgs::Float32::ConstPtr& msg)
+void UgvcGUI::distanceSubCallback(const std_msgs::Float32::ConstPtr& msg)
 {
     QLocale english(QLocale::English, QLocale::UnitedStates);
     QString qdist = english.toString(msg->data, 'f', 2);
@@ -234,7 +234,7 @@ void FallRiskGUI::distanceSubCallback(const std_msgs::Float32::ConstPtr& msg)
 }
 
 
-void FallRiskGUI::liveVideoCallback(const sensor_msgs::ImageConstPtr& msg)
+void UgvcGUI::liveVideoCallback(const sensor_msgs::ImageConstPtr& msg)
 {
 
     /**
@@ -257,7 +257,7 @@ void FallRiskGUI::liveVideoCallback(const sensor_msgs::ImageConstPtr& msg)
     setVideo(ui->lbLiveVideoBig,cv_ptr_big);
 }
 
-void FallRiskGUI::setVideo(QLabel* label, cv_bridge::CvImagePtr cv_ptr){
+void UgvcGUI::setVideo(QLabel* label, cv_bridge::CvImagePtr cv_ptr){
     cv::Mat RGBImg;
     QLabel* liveVideoLabel = label;
 
@@ -280,7 +280,7 @@ void FallRiskGUI::setVideo(QLabel* label, cv_bridge::CvImagePtr cv_ptr){
 
 }
 
-void FallRiskGUI::setRobotVelocity()
+void UgvcGUI::setRobotVelocity()
 {
     linearVelocity = ui->sliderLinearVel->value()*(LIN_VEL_MAX-LIN_VEL_MIN)/100+LIN_VEL_MIN;
     ROS_INFO("Linear velocity:%f",linearVelocity);
@@ -288,7 +288,7 @@ void FallRiskGUI::setRobotVelocity()
     ROS_INFO("Angular velocity:%f",angularVelocity);
 }
 
-void FallRiskGUI::moveBaseForward()
+void UgvcGUI::moveBaseForward()
 {
     ROS_INFO("move forward");
 
@@ -303,7 +303,7 @@ void FallRiskGUI::moveBaseForward()
     sendMoveBaseCmd();
 }
 
-void FallRiskGUI::moveBaseBackward()
+void UgvcGUI::moveBaseBackward()
 {
     ROS_INFO("move backward");
 
@@ -318,7 +318,7 @@ void FallRiskGUI::moveBaseBackward()
     sendMoveBaseCmd();
 }
 
-void FallRiskGUI::moveBaseLeft()
+void UgvcGUI::moveBaseLeft()
 {
     ROS_INFO("move left");
 
@@ -333,7 +333,7 @@ void FallRiskGUI::moveBaseLeft()
     sendMoveBaseCmd();
 }
 
-void FallRiskGUI::moveBaseRight()
+void UgvcGUI::moveBaseRight()
 {
     ROS_INFO("move right");
 
@@ -348,7 +348,7 @@ void FallRiskGUI::moveBaseRight()
     sendMoveBaseCmd();
 }
 
-void FallRiskGUI::sendMoveBaseCmd()
+void UgvcGUI::sendMoveBaseCmd()
 {
     if(ros::ok() && moveBaseCmdPub)
     {
@@ -357,7 +357,7 @@ void FallRiskGUI::sendMoveBaseCmd()
     }
 }
 
-void FallRiskGUI::setCurrentTool(int btnID)
+void UgvcGUI::setCurrentTool(int btnID)
 {
     if(btnID == -2)
     {
@@ -393,7 +393,7 @@ void FallRiskGUI::setCurrentTool(int btnID)
     changeToolBtnStatus(btnID);
 }
 
-void FallRiskGUI::changeToolBtnStatus(int btnID)
+void UgvcGUI::changeToolBtnStatus(int btnID)
 {
     ui->btnRvizInteract->setFlat(true);
     ui->btnRvizMeasure->setFlat(true);
@@ -415,7 +415,7 @@ void FallRiskGUI::changeToolBtnStatus(int btnID)
     }
 }
 
-void FallRiskGUI::setActiveRvizToolBtns(int tabID)
+void UgvcGUI::setActiveRvizToolBtns(int tabID)
 {
 //    ROS_INFO("TAB:%d",tabID);
 

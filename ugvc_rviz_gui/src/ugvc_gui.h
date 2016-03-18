@@ -1,5 +1,5 @@
-#ifndef FALLRISK_GUI_H
-#define FALLRISK_GUI_H
+#ifndef ugvc_GUI_H
+#define ugvc_GUI_H
 
 #include <QMainWindow>
 #include <QWidget>
@@ -42,7 +42,7 @@
 #define BASE_BATTERY_DANGER 132
 
 namespace Ui {
-class FallRiskGUI;
+class UgvcGUI;
 }
 
 namespace rviz
@@ -54,17 +54,17 @@ class ImageDisplay;
 class Panel;
 }
 
-class FallRiskGUI : public QMainWindow
+class UgvcGUI : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit FallRiskGUI(QWidget *parent = 0);
-    ~FallRiskGUI();
+    explicit UgvcGUI(QWidget *parent = 0);
+    ~UgvcGUI();
 
 
 private:
-    Ui::FallRiskGUI *ui;
+    Ui::UgvcGUI *ui;
 
 private:
     void initActionsConnections();
@@ -150,4 +150,4 @@ private:
 };
 
 
-#endif // FALLRISK_GUI_H
+#endif // ugvc_GUI_H

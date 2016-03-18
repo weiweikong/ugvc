@@ -12,16 +12,13 @@ find_package(catkin REQUIRED COMPONENTS
   cv_bridge
   image_transport
 )
-
-## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
-
 ## Configuration of Qt 
 find_package(Qt4 COMPONENTS QtCore QtGui REQUIRED)
 
 include(${QT_USE_FILE})
 add_definitions(-DQT_NO_KEYWORDS)
 add_definitions(${QT_DEFINITIONS})
+
 
 set(HEADER_FILES 
   src/ugvc_gui.h
@@ -46,8 +43,61 @@ QT4_WRAP_UI(MOC_GUI_H
 )
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
-#message("1111111111111111111111111111111111111111")
-#message("ddd${CMAKE_RUNTIME_OUTPUT_DIRECTORY}dd")
+
+catkin_package(
+#  INCLUDE_DIRS include
+#  LIBRARIES ugvc_rviz_gui
+#  CATKIN_DEPENDS roscpp rviz sensor_msgs std_msgs
+#  DEPENDS system_lib
+)
+
+###################################
+## catkin specific configuration ##
+###################################
+
+
+
+###########
+## Build ##
+###########
+
+## Specify additional locations of header files
+## Your package locations should be listed before other locations
+# include_directories(include)
+include_directories(
+  include
+  ${catkin_INCLUDE_DIRS}
+)
+
+## Declare a cpp library
+# add_library(ugvc_rviz_gui
+#   src/${PROJECT_NAME}/ugvc_rviz_gui.cpp
+# )
+
+add_executable(ugvc_rviz_gui ${SOURCE_FILES} ${MOC_SRC_H} ${MOC_GUI_H})
+target_link_libraries(ugvc_rviz_gui ${QT_LIBRARIES} ${catkin_LIBRARIES})
+
+
+## Declare a cpp executable
+# add_executable(ugvc_rviz_gui_node src/ugvc_rviz_gui_node.cpp)
+
+## Add cmake target dependencies of the executable/library
+## as an example, message headers may need to be generated before nodes
+# add_dependencies(ugvc_rviz_gui_node ugvc_rviz_gui_generate_messages_cpp)
+
+## Specify libraries to link a library or executable target against
+# target_link_libraries(ugvc_rviz_gui_node
+#   ${catkin_LIBRARIES}
+# )
+
+
+
+
+## System dependencies are found with CMake's conventions
+# find_package(Boost REQUIRED COMPONENTS system)
+
+
+
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -85,46 +135,4 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 #   sensor_msgs#   std_msgs
 # )
 
-###################################
-## catkin specific configuration ##
-###################################
-
-catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES ugvc_rviz_gui
-#  CATKIN_DEPENDS roscpp rviz sensor_msgs std_msgs
-#  DEPENDS system_lib
-)
-
-###########
-## Build ##
-###########
-
-## Specify additional locations of header files
-## Your package locations should be listed before other locations
-# include_directories(include)
-include_directories(
-  include
-  ${catkin_INCLUDE_DIRS}
-)
-
-## Declare a cpp library
-# add_library(ugvc_rviz_gui
-#   src/${PROJECT_NAME}/ugvc_rviz_gui.cpp
-# )
-
-add_executable(ugvc_rviz_gui ${SOURCE_FILES} ${MOC_SRC_H} ${MOC_GUI_H})
-target_link_libraries(ugvc_rviz_gui ${QT_LIBRARIES} ${catkin_LIBRARIES})
-
-## Declare a cpp executable
-# add_executable(ugvc_rviz_gui_node src/ugvc_rviz_gui_node.cpp)
-
-## Add cmake target dependencies of the executable/library
-## as an example, message headers may need to be generated before nodes
-# add_dependencies(ugvc_rviz_gui_node ugvc_rviz_gui_generate_messages_cpp)
-
-## Specify libraries to link a library or executable target against
-# target_link_libraries(ugvc_rviz_gui_node
-#   ${catkin_LIBRARIES}
-# )
 
